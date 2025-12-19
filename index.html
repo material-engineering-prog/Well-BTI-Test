@@ -1,0 +1,1435 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <title>Well-BTI診断 💖🌈 Well-Being MBTI風テスト</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#ffffff;
+      --card:#ffffff;
+      --border:#e5e7eb;
+      --text-main:#111827;
+      --text-sub:#6b7280;
+      --accent:#2563eb;
+      --accent-soft:rgba(37,99,235,.08);
+      --h-color:#16a34a;
+      --e-color:#ca8a04;
+      --s-color:#2563eb;
+      --r-color:#db2777;
+      --danger:#ef4444;
+      --shadow: 0 12px 28px rgba(17,24,39,.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      margin:0;
+    }
+    .app-shell{min-height:100vh;display:flex;flex-direction:column}
+    header{
+      border-bottom:1px solid var(--border);
+      background:#fff;
+      position:sticky; top:0; z-index:10;
+      backdrop-filter:saturate(180%) blur(6px);
+    }
+    .header-inner{
+      max-width:980px;margin:0 auto;
+      display:flex;align-items:center;justify-content:space-between;
+      gap:1rem; padding:.75rem 1rem;
+    }
+    .logo{display:flex;align-items:center;gap:.6rem;font-weight:800}
+    .logo-title{display:flex;flex-direction:column;line-height:1.1}
+    .logo-title .name{font-size:1.05rem}
+    .logo-title .sub{font-size:.78rem;color:var(--text-sub);font-weight:600}
+    .user-badge{
+      display:inline-flex;align-items:center;gap:.35rem;
+      font-size:.8rem;color:var(--text-sub);
+      border:1px solid var(--border);border-radius:999px;
+      padding:.22rem .6rem;background:#fff;
+      margin-left:.5rem;
+    }
+    nav{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:flex-end}
+    nav button{
+      border:1px solid transparent;
+      background:transparent;
+      color:var(--text-sub);
+      cursor:pointer;
+      padding:.35rem .6rem;
+      border-radius:999px;
+      font-size:.85rem;
+    }
+    nav button.active{
+      background: var(--accent-soft);
+      border-color: rgba(37,99,235,.25);
+      color: var(--accent);
+    }
+    main{flex:1;padding:1.1rem 1rem 2rem}
+    .container{max-width:980px;margin:0 auto}
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+    }
+    h1,h2,h3{margin:0 0 .55rem 0}
+    h1{font-size:1.45rem}
+    h2{font-size:1.08rem}
+    .muted{font-size:.88rem;color:var(--text-sub)}
+    .small{font-size:.78rem}
+    .pill{
+      display:inline-flex;align-items:center;gap:.35rem;
+      border-radius:999px;padding:.18rem .6rem;
+      font-size:.75rem;background:#f9fafb;border:1px solid var(--border);
+      color: var(--text-sub);
+    }
+    .section-title{display:flex;align-items:center;gap:.45rem;margin-bottom:.4rem}
+    .grid{display:grid;gap:.75rem}
+    @media (min-width: 720px){ .grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))} }
+    label{font-size:.82rem;color:var(--text-sub)}
+    select,input[type="text"]{
+      width:100%;margin-top:.25rem;padding:.45rem .55rem;border-radius:.6rem;
+      border:1px solid var(--border);background:#fff;color:var(--text-main);font-size:.9rem;
+    }
+    .toggle-row{display:flex;align-items:flex-start;gap:.55rem;font-size:.9rem}
+    .toggle{
+      width:40px;height:22px;border-radius:999px;background:#e5e7eb;
+      padding:2px;display:flex;align-items:center;cursor:pointer;user-select:none;
+      border:1px solid #d1d5db;
+    }
+    .toggle-thumb{
+      width:18px;height:18px;border-radius:999px;background:#fff;
+      transition:transform .15s ease;background .15s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    }
+    .toggle.on{background: rgba(37,99,235,.22); border-color: rgba(37,99,235,.35)}
+    .toggle.on .toggle-thumb{transform:translateX(18px); background:#2563eb}
+    button.primary{
+      border:none;border-radius:999px;padding:.6rem 1.2rem;font-size:.92rem;font-weight:700;
+      cursor:pointer;background:linear-gradient(120deg,#2563eb,#db2777);color:#fff;
+      display:inline-flex;align-items:center;gap:.45rem;
+    }
+    button.secondary{
+      border-radius:999px;border:1px solid var(--border);background:#fff;color:var(--text-main);
+      padding:.52rem 1rem;font-size:.88rem;cursor:pointer;
+    }
+    button.ghost{
+      border-radius:999px;border:1px dashed var(--border);background:#fff;color:var(--text-sub);
+      padding:.45rem .9rem;font-size:.84rem;cursor:pointer;
+    }
+    button.primary:disabled{opacity:.5;cursor:not-allowed}
+    .btn-row{display:flex;justify-content:flex-end;gap:.6rem;margin-top:.8rem;flex-wrap:wrap}
+
+    /* quiz */
+    .quiz-header{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+    .quiz-toggle{display:flex;align-items:center;gap:.5rem}
+    .page-indicator{font-size:.85rem;color:var(--text-sub)}
+    .question{
+      margin-bottom:.85rem;border-radius:1rem;padding:.85rem;background:#fff;
+      border:1px solid var(--border);
+    }
+    .question-text{font-size:1rem;margin-bottom:.45rem}
+    .scale-row{display:flex;flex-wrap:wrap;gap:.35rem;margin:.2rem 0 .25rem}
+    .scale-option{
+      font-size:.82rem;display:inline-flex;flex-direction:column;align-items:center;gap:.15rem;
+      cursor:pointer;padding:.25rem .45rem;border-radius:.65rem;border:1px solid transparent;
+      min-width: 56px;
+    }
+    .scale-option input{cursor:pointer}
+    .scale-option.active{border-color:rgba(37,99,235,.55);background:var(--accent-soft);color:var(--accent)}
+    .scale-caption{font-size:.76rem;color:var(--text-sub)}
+    .axis-tag{
+      font-size:.73rem;padding:.14rem .5rem;border-radius:999px;background:#fff;
+      border:1px solid var(--border);display:inline-flex;align-items:center;gap:.25rem;
+      margin-right:.25rem;margin-bottom:.25rem;
+    }
+    .axis-tag[data-axis="H"]{border-color:rgba(22,163,74,.35);color:var(--h-color)}
+    .axis-tag[data-axis="E"]{border-color:rgba(202,138,4,.35);color:var(--e-color)}
+    .axis-tag[data-axis="S"]{border-color:rgba(37,99,235,.35);color:var(--s-color)}
+    .axis-tag[data-axis="R"]{border-color:rgba(219,39,119,.35);color:var(--r-color)}
+
+    /* result */
+    .result-main{display:grid;gap:1rem}
+    @media (min-width: 860px){ .result-main{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)} }
+    .type-title{font-size:1.25rem;font-weight:900;display:flex;align-items:center;gap:.45rem;margin-bottom:.2rem}
+    .type-code{font-size:.85rem;color:var(--text-sub)}
+    .badge-chip{
+      display:inline-flex;align-items:center;gap:.2rem;padding:.16rem .5rem;border-radius:999px;
+      font-size:.75rem;background:#fff;border:1px solid var(--border);margin-right:.25rem;margin-top:.15rem
+    }
+    .actions-list{list-style:none;padding-left:0;margin:.4rem 0 0;font-size:.92rem}
+    .actions-list li{margin-bottom:.35rem;padding-left:.35rem;position:relative}
+    .actions-list li::before{content:"🌱";position:absolute;left:-1.05rem;top:.05rem;font-size:.85rem}
+    .share-row{margin-top:.65rem;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+    .share-input{
+      flex:1;min-width:200px;border-radius:.65rem;border:1px solid var(--border);
+      background:#fff;color:var(--text-main);padding:.38rem .55rem;font-size:.85rem;
+    }
+    canvas{
+      border-radius:.9rem;width:100%;max-width:440px;height:auto;background:#fff;border:1px solid var(--border)
+    }
+
+    /* shortest move */
+    .shortest-move{
+      margin-top:.6rem;
+      border:1px solid rgba(37,99,235,.25);
+      background: rgba(37,99,235,.06);
+      padding:.65rem .75rem;
+      border-radius:.9rem;
+      font-size:.95rem;
+      line-height:1.35;
+    }
+    .shortest-move b{font-weight:900}
+
+    /* history */
+    .history-empty{font-size:.9rem;color:var(--text-sub)}
+    .history-list{margin-top:.5rem;font-size:.9rem;max-height:220px;overflow-y:auto}
+    .history-item{
+      display:flex;justify-content:space-between;gap:.75rem;padding:.38rem 0;border-bottom:1px dashed #e5e7eb;
+      cursor:pointer;
+    }
+    .history-item:hover{background:#f9fafb}
+    .danger-link{color:var(--danger);font-size:.9rem;cursor:pointer;text-decoration:underline}
+
+    /* mode toggle */
+    .mode-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.55rem}
+    .mode-btn{
+      border-radius:999px;border:1px solid var(--border);background:#fff;color:var(--text-main);
+      padding:.45rem .9rem;font-size:.85rem;cursor:pointer;font-weight:700;
+    }
+    .mode-btn.active{
+      border-color: rgba(37,99,235,.45);
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    /* rainbow heart svg size */
+    .logo svg{width:34px;height:34px;flex:0 0 auto}
+  </style>
+</head>
+
+<body>
+<div class="app-shell">
+  <header>
+    <div class="header-inner">
+      <div class="logo" aria-label="Well-BTI ロゴ">
+        <svg viewBox="0 0 64 64" role="img" aria-label="虹のハート">
+          <defs>
+            <linearGradient id="rainbow" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#ef4444"/>
+              <stop offset="18%" stop-color="#f97316"/>
+              <stop offset="36%" stop-color="#eab308"/>
+              <stop offset="54%" stop-color="#22c55e"/>
+              <stop offset="72%" stop-color="#3b82f6"/>
+              <stop offset="90%" stop-color="#a855f7"/>
+              <stop offset="100%" stop-color="#db2777"/>
+            </linearGradient>
+          </defs>
+          <path fill="url(#rainbow)" d="M32 56s-18.7-11.4-26-22.3C-1 23.2 4.2 10 17 10c6 0 11 3.5 15 8 4-4.5 9-8 15-8 12.8 0 18 13.2 11 23.7C50.7 44.6 32 56 32 56z"/>
+          <path fill="rgba(255,255,255,.35)" d="M20 16c-6 0-10 6-6 13 2 4 8 10 12 13-5-7-8-12-9-15-2-6 1-11 3-11z"/>
+        </svg>
+        <div class="logo-title">
+          <div class="name">Well-BTI診断</div>
+          <div class="sub">「最大化」と「犠牲」を可視化する</div>
+        </div>
+        <div id="current-user-badge" class="user-badge" style="display:none;">👤 <span id="current-user-name"></span></div>
+      </div>
+
+      <nav>
+        <button type="button" class="nav-btn active" data-target="onboarding-section">🟢 はじめる</button>
+        <button type="button" class="nav-btn" data-target="quiz-section">📝 診断</button>
+        <button type="button" class="nav-btn" data-target="result-section">🎯 結果</button>
+        <button type="button" class="nav-btn" data-target="history-section">📈 履歴</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <!-- Onboarding -->
+      <section id="onboarding-section">
+        <div class="card">
+          <h1>Well-BTI診断へようこそ 💖🌈</h1>
+          <p class="muted">
+            これは「良い/悪い」ではなく、あなたが <strong>何を最大化し、何を犠牲にしがちか</strong> を言語化する診断です。<br/>
+            <strong>4軸（H/E/S/R）</strong>をスコア化し、<strong>1位軸 × 4位軸</strong>でタイプ分類します。
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <span>🧬 プロフィール</span>
+            <span class="pill">名前ごとに履歴が分かれます</span>
+          </div>
+
+          <div class="grid grid-cols-3" style="margin-top:.55rem;">
+            <div>
+              <label for="user-name">名前（必須）</label>
+              <input id="user-name" type="text" placeholder="例: こまき / K.K." />
+              <div class="muted small" style="margin-top:.25rem;">※同じ名前なら履歴が続きます（ブラウザ内に保存）</div>
+            </div>
+            <div>
+              <label for="age-group">年齢層</label>
+              <select id="age-group">
+                <option value="">選択してください</option>
+                <option value="teen">〜19歳</option>
+                <option value="20s">20代</option>
+                <option value="30s">30代</option>
+                <option value="40s">40代以上</option>
+              </select>
+            </div>
+            <div>
+              <label for="chronotype">生活リズム</label>
+              <select id="chronotype">
+                <option value="">選択してください</option>
+                <option value="morning">朝型</option>
+                <option value="evening">夜型</option>
+                <option value="flex">どちらともいえない</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top:.75rem;">
+            <label for="grade">学年・職業</label>
+            <input id="grade" type="text" placeholder="例: 大学2年 / 社会人3年目" />
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <span>🛡️ セーフティと同意</span>
+          </div>
+
+          <div class="grid">
+            <div class="toggle-row">
+              <div class="toggle" id="toggle-consent" role="switch" aria-checked="false" tabindex="0">
+                <div class="toggle-thumb"></div>
+              </div>
+              <div>
+                <div>
+                  プライバシーポリシーを読み、<strong>匿名の統計分析に自分のデータが使われることに同意</strong>します。
+                </div>
+                <div class="muted small">
+                  ※このデモ版ではデータはブラウザ内（ローカルストレージ）のみで処理されます。
+                </div>
+              </div>
+            </div>
+
+            <div class="toggle-row">
+              <div class="toggle" id="toggle-analytics" role="switch" aria-checked="false" tabindex="0">
+                <div class="toggle-thumb"></div>
+              </div>
+              <div>
+                <div>匿名の利用状況（どの画面がよく見られたかなど）の計測に協力する。</div>
+                <div class="muted small">実際には外部送信せず、コンソールログのON/OFFだけを切り替えます。</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button id="start-quiz-btn" class="primary" disabled>診断を始める 🚀</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quiz -->
+      <section id="quiz-section" style="display:none;">
+        <div class="card">
+          <div class="quiz-header">
+            <div>
+              <h2>📝 Well-BTI 診断テスト</h2>
+              <p class="muted small">直近のあなたの状態を思い浮かべながら、直感で答えてください。1〜5は「全くそう思わない〜とてもそう思う」です。</p>
+            </div>
+
+            <div class="quiz-toggle">
+              <span class="muted small">表示</span>
+              <div class="toggle" id="toggle-page-size" role="switch" aria-checked="false" tabindex="0">
+                <div class="toggle-thumb"></div>
+              </div>
+              <span id="page-size-label" class="small">1問ずつ</span>
+
+              <span class="muted small" style="margin-left:.5rem;">自動で次へ</span>
+              <div class="toggle" id="toggle-auto-next" role="switch" aria-checked="true" tabindex="0">
+                <div class="toggle-thumb"></div>
+              </div>
+              <span id="auto-next-label" class="small">ON</span>
+            </div>
+          </div>
+          <div class="page-indicator" id="page-indicator"></div>
+        </div>
+
+        <div class="card" id="quiz-questions-container"></div>
+
+        <div class="card">
+          <div class="btn-row">
+            <button id="prev-page-btn" class="secondary">戻る</button>
+            <button id="next-page-btn" class="primary">次へ →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Result -->
+      <section id="result-section" style="display:none;">
+        <div class="card">
+          <h2>🎯 診断結果</h2>
+          <p class="muted small">
+            「あなたは◯◯を最大化し、△△を犠牲にしています」を一撃で出します。<br/>
+            さらに <strong>闇落ち版 / 覚醒版</strong> を切り替えて、未来の分岐も見えます。
+          </p>
+        </div>
+
+        <div class="result-main">
+          <div class="card">
+            <div id="result-type-block"></div>
+
+            <div class="mode-row">
+              <button id="mode-awake" class="mode-btn active" type="button">✨ 覚醒版</button>
+              <button id="mode-dark" class="mode-btn" type="button">🌑 闇落ち版</button>
+            </div>
+
+            <div class="mt-2">
+              <div class="pill" id="tradeoff-line" style="display:inline-flex;"></div>
+            </div>
+
+            <div id="shortest-move-box" class="shortest-move" style="display:none;"></div>
+
+            <div class="mt-2">
+              <h3 class="small">🧠 分岐コメント</h3>
+              <div id="mode-description" class="muted"></div>
+            </div>
+
+            <div class="mt-2">
+              <h3 class="small">🔍 4軸スコア</h3>
+              <div id="result-scores-block" class="small" style="margin-top:.25rem;"></div>
+            </div>
+
+            <div class="mt-2">
+              <h3 class="small">🌱 今週のマイクロアクション（下位2軸を底上げ）</h3>
+              <ul id="result-actions-block" class="actions-list"></ul>
+            </div>
+
+            <div class="share-row">
+              <input id="share-text" class="share-input" readonly />
+              <button id="copy-share-btn" class="secondary" type="button">コピー 📋</button>
+              <button id="native-share-btn" class="secondary" type="button">共有 📤</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="small">📊 レーダーチャート</h3>
+            <canvas id="radar-canvas" width="420" height="420" aria-label="Well-Beingレーダーチャート"></canvas>
+
+            <div class="mt-2">
+              <h3 class="small">🕘 過去の結果を再表示</h3>
+              <p class="muted small">履歴からクリックすると、その回のスコアでこの結果画面が更新されます。</p>
+              <button id="jump-history-btn" class="ghost" type="button">履歴へ行く →</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- History -->
+      <section id="history-section" style="display:none;">
+        <div class="card">
+          <h2>📈 あなたのWell-Beingトレンド</h2>
+          <p class="muted small">名前ごとに履歴が保存されます（ローカルのみ）。別の名前に切り替えると、その人の履歴が表示されます。</p>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <span>👤 履歴を見る名前</span>
+          </div>
+          <div class="grid" style="grid-template-columns: 1fr auto; align-items:end;">
+            <div>
+              <label for="history-user-select">名前を選択</label>
+              <select id="history-user-select"></select>
+              <div class="muted small" style="margin-top:.25rem;">※このブラウザに保存されている名前のみ表示されます</div>
+            </div>
+            <div>
+              <button id="set-as-current-user-btn" class="secondary" type="button">この名前を現在ユーザーにする</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="small">ラインチャート</h3>
+          <canvas id="history-canvas" width="760" height="280" aria-label="履歴の折れ線グラフ"></canvas>
+          <div class="mt-2">
+            <span class="badge-chip" style="border-color:rgba(22,163,74,.35);color:var(--h-color);">H:活力</span>
+            <span class="badge-chip" style="border-color:rgba(202,138,4,.35);color:var(--e-color);">E:財務的安心</span>
+            <span class="badge-chip" style="border-color:rgba(37,99,235,.35);color:var(--s-color);">S:所属</span>
+            <span class="badge-chip" style="border-color:rgba(219,39,119,.35);color:var(--r-color);">R:目的</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="small">履歴一覧（クリックでその回を再表示）</h3>
+          <div id="history-list-container" class="history-list"></div>
+          <div class="mt-2">
+            <span id="clear-history-btn" class="danger-link">この名前の履歴を削除する（ローカルデータのみ）</span>
+          </div>
+        </div>
+      </section>
+
+      <p class="muted small" style="margin-top:1rem;">
+        ※このデモはローカル完結です。入力・結果はあなたのブラウザ内（localStorage）にのみ保存されます。
+      </p>
+    </div>
+  </main>
+</div>
+
+<script>
+/******************************************************************
+ * データ定義
+ ******************************************************************/
+const AXES = ["H","E","S","R"];
+const AXIS_LABELS = {
+  H:"H: 活力（健康・安定）",
+  E:"E: 財務的安心",
+  S:"S: 所属・つながり",
+  R:"R: 目的・自己実現"
+};
+const AXIS_CORE = { H:"健康と回復", E:"経済的安定", S:"つながり", R:"目的と意味" };
+const AXIS_EMOJI = { H:"💪", E:"💰", S:"🤝", R:"🚀" };
+const AXIS_COLORS = {
+  H: getComputedStyle(document.documentElement).getPropertyValue("--h-color") || "#16a34a",
+  E: getComputedStyle(document.documentElement).getPropertyValue("--e-color") || "#ca8a04",
+  S: getComputedStyle(document.documentElement).getPropertyValue("--s-color") || "#2563eb",
+  R: getComputedStyle(document.documentElement).getPropertyValue("--r-color") || "#db2777"
+};
+
+// 基本16問
+const baseQuestions = [
+  {id:"H1",axis:"H",kind:"base",reverse:false,text:"この一週間で、翌日に疲労を持ち越さないと感じる質の高い睡眠を取れた日がほとんどだった。"},
+  {id:"H2",axis:"H",kind:"base",reverse:false,text:"ストレスを感じたとき、それを適切に解消する方法を持っている。"},
+  {id:"H3",axis:"H",kind:"base",reverse:false,text:"週に2回以上、心拍数が上がるような運動を意識的に行っている。"},
+  {id:"H4",axis:"H",kind:"base",reverse:false,text:"突然のネガティブな出来事があっても、感情的にパニックになることは少ない。"},
+  {id:"E1",axis:"E",kind:"base",reverse:false,text:"予期せぬ大きな出費に対応できる貯蓄がある。"},
+  {id:"E2",axis:"E",kind:"base",reverse:false,text:"毎月の予算を事前に決めており、それをほとんど守れている。"},
+  {id:"E3",axis:"E",kind:"base",reverse:false,text:"将来の財務状況について、具体的な計画を持っている。"},
+  {id:"E4",axis:"E",kind:"base",reverse:false,text:"経済的理由で、やりたいことや学びを諦めていると感じることはほとんどない。"},
+  {id:"S1",axis:"S",kind:"base",reverse:false,text:"弱みや悩みを隠さずに話せる親しい友人が2人以上いる。"},
+  {id:"S2",axis:"S",kind:"base",reverse:false,text:"所属するコミュニティで、自分が必要とされていると感じる。"},
+  {id:"S3",axis:"S",kind:"base",reverse:false,text:"最近の人間関係は、消耗ではなく活力を与えてくれる。"},
+  {id:"S4",axis:"S",kind:"base",reverse:false,text:"誰とも話さない日があっても、孤立している感覚はほとんどない。"},
+  {id:"R1",axis:"R",kind:"base",reverse:false,text:"人生には明確な目標や使命があり、そのために行動できている。"},
+  {id:"R2",axis:"R",kind:"base",reverse:false,text:"新しい知識やスキルを学ぶことに、時間やお金を投資している。"},
+  {id:"R3",axis:"R",kind:"base",reverse:false,text:"時間があっという間に過ぎるほど、熱中できる活動を週に数回行っている。"},
+  {id:"R4",axis:"R",kind:"base",reverse:false,text:"重要な選択を、他人の意見ではなく自分の価値観に基づいて行っている。"},
+];
+
+// 軸間比較 12問（主軸 vs 比較軸）
+const pairQuestions = [
+  {id:"P_EH1",kind:"pair",axis:"E",compareAxis:"H",text:"寝不足で学校やバイトに行きがちだ。"},
+  {id:"P_ES1",kind:"pair",axis:"E",compareAxis:"S",text:"友達と遊ぶより、稼ぐ方が満たされる。"},
+  {id:"P_ER1",kind:"pair",axis:"E",compareAxis:"R",text:"目的の達成のためならお金を使うことは厭わない。"},
+  {id:"P_HE1",kind:"pair",axis:"H",compareAxis:"E",text:"多少高くても健康的な食事をする。"},
+  {id:"P_HS1",kind:"pair",axis:"H",compareAxis:"S",text:"誘いがあっても、健康が大事なので断ることが多い。"},
+  {id:"P_HR1",kind:"pair",axis:"H",compareAxis:"R",text:"試験前でも睡眠を優先する。"},
+  {id:"P_SE1",kind:"pair",axis:"S",compareAxis:"E",text:"金銭感覚が合わなくても友達付き合いを優先してしまう。"},
+  {id:"P_SH1",kind:"pair",axis:"S",compareAxis:"H",text:"周りの影響で生活習慣が乱れがちだ。"},
+  {id:"P_SR1",kind:"pair",axis:"S",compareAxis:"R",text:"重要な決断で周りに決めてもらいがちだ。"},
+  {id:"P_RE1",kind:"pair",axis:"R",compareAxis:"E",text:"自分の好きなものにはお金を惜しまない。"},
+  {id:"P_RH1",kind:"pair",axis:"R",compareAxis:"H",text:"睡眠を削ってでも成長につながることを優先したい。"},
+  {id:"P_RS1",kind:"pair",axis:"R",compareAxis:"S",text:"目的のためなら孤立してもいいと思う。"},
+];
+
+const QUESTIONS = [...baseQuestions, ...pairQuestions];
+
+// ペア質問の寄与（1〜5）
+const pairScoreMap = {
+  1:{main:-20, comp:+20},
+  2:{main:-10, comp:+10},
+  3:{main:  0, comp:  0},
+  4:{main:+10, comp:-10},
+  5:{main:+20, comp:-20},
+};
+
+// 1位軸 × 4位軸（TOP-LOW）
+const TYPE_TABLE = {
+  "E-H":{code:"E-H",label:"社畜",vibe:"稼ぎ優先で体が後回し",dark:"慢性疲労で成果が落ちるのに、さらに労働で埋めるループに入る。",awake:"睡眠・回復を“投資”扱いにして、同じ努力で成果を倍にする。"},
+  "E-S":{code:"E-S",label:"コスパ原理主義者",vibe:"損得最適化で孤立しがち",dark:"正論と合理性だけが残り、助けが来ない“孤独な最適化”になる。",awake:"人間関係を“非効率だけど強い資産”として設計し、味方を増やす。"},
+  "E-R":{code:"E-R",label:"金の亡者",vibe:"金が目的を飲み込む",dark:"増える残高、減る納得感。勝ってるのに虚しい状態へ。",awake:"お金を手段に戻し、“何のために稼ぐか”で判断が速くなる。"},
+  "H-E":{code:"H-E",label:"アスリート",vibe:"整えるが金は後回し",dark:"万全を待ちすぎて機会を逃す。準備だけで年が終わる。",awake:"健康×収入の両立で長期勝ち。体調を守りながら稼ぐルールを作れる。"},
+  "H-S":{code:"H-S",label:"仙人",vibe:"平穏重視で関係が薄くなる",dark:"波風ゼロだが孤立が進む。“安全”が“無人”になる。",awake:"無理せず繋がれる導線を作り、静かな信頼のハブになれる。"},
+  "H-R":{code:"H-R",label:"脳筋",vibe:"勢いはあるが目的が霞む",dark:"全力なのに方向がズレる。燃え尽きと徒労のセット。",awake:"体力を“目的達成の燃料”にできる。やることの選球眼が生まれる。"},
+  "S-E":{code:"S-E",label:"人情破産予備軍",vibe:"優しさで財布が死ぬ",dark:"気前良さが義務化して、余裕が消える。優しさが苦しくなる。",awake:"出す範囲を決めて“持続可能な優しさ”を実装できる。"},
+  "S-H":{code:"S-H",label:"二日酔いニキ",vibe:"ノリ優先で体が崩れる",dark:"盛り上げ役の代償で慢性不調。回復が追いつかない。",awake:"回復ルーティン付きで遊べる。“楽しさ”が長持ちする。"},
+  "S-R":{code:"S-R",label:"空気人間",vibe:"調和優先で目的が消える",dark:"共感の達人だが、人生のハンドルを握ってない状態になる。",awake:"“自分の言葉”を持った共感者。周りも自分も救える。"},
+  "R-E":{code:"R-E",label:"理想追求亡者",vibe:"理想のために現実が崩れる",dark:"志は高いのに資金が続かない。夢が“息切れ”で終わる。",awake:"理想を回す現実設計者。目的と資金計画が噛み合う。"},
+  "R-H":{code:"R-H",label:"自壊型革命家",vibe:"使命で自分を削る",dark:"燃え尽き英雄。壊れてからやっと止まる。",awake:"休むのも戦略。回復を入れてこそ革命が続く。"},
+  "R-S":{code:"R-S",label:"孤高の暴君",vibe:"目的優先で孤立する",dark:"成果は出るが味方がいない。いつか折れる。",awake:"ビジョンを共有できる王。協力を引き出し、もっと遠くへ行ける。"},
+};
+
+// 4軸完全同点の特殊タイプ（スコア帯別）
+const TIE_TYPES = {
+  "0":   { label:"虚無",  dark:"全部ゼロ。感情も体力も財布も目的も、いったん停止してる。", awake:"まずは“今日の最低ライン”を作るだけで十分。", hint:"やることは1つだけ。睡眠→食事→外に出る、の順で復帰。" },
+  "low": { label:"迷子",  dark:"大事なものが多すぎて、優先順位が決められない。永遠の準備中。", awake:"今期テーマを1つ決めた瞬間、全部が動き出す。", hint:"今月だけ、1軸を“最優先”にする宣言をしよう。" },
+  "mid": { label:"賢者",  dark:"何でもできるが、突出がない。安全運転で伸びが鈍る。", awake:"状況に応じて切替できる万能型。選んで尖れば強い。", hint:"今週は“1番伸ばしたい軸”を1つだけ決める。" },
+  "100": { label:"聖人",  dark:"理論上最強だが、現実だと無理しすぎて反動が来ることがある。", awake:"自分も周りも満たせる。維持のための休息が鍵。", hint:"維持が最難関。回復日を先にカレンダーへ。" },
+};
+
+const ACTIONS = {
+  H:[
+    "寝る90分前に“風呂 or シャワー”だけ固定して、睡眠の質を底上げする。",
+    "今日だけでいいので、歩く時間を合計15分つくる（駅1つ分でもOK）。",
+    "カフェインは“14時まで”ルールにして、夜の回復を守る。",
+    "5分ストレッチ＋深呼吸を“トイレの後”に紐づけて習慣化する。",
+    "寝起きにコップ1杯の水→体が目覚める儀式にする。",
+    "明日の自分のために、机の上を30秒だけ片付ける（脳の負荷が下がる）。",
+    "今週は“休む日”を1回だけ先に宣言して守る。",
+    "睡眠時間を増やせないなら“起床時刻だけ固定”してリズムを作る。",
+  ],
+  E:[
+    "固定費（サブスク/通信費）を1つだけ棚卸しして、解約候補を出す。",
+    "今週の支出を1回だけ見返して「いらなかった支出」を1つ切る。",
+    "“使っていい娯楽費”を先に決めて、罪悪感を消す。",
+    "来月用に500円だけ“防災貯金”を作って、安心を買う。",
+    "給料日/入金日に自動で積立が動く仕組みを作る（少額でOK）。",
+    "コンビニを1回だけスキップして、その分を貯金に移す。",
+    "大きい買い物は“24時間ルール”を導入する（衝動を消す）。",
+    "将来不安の正体を1行で書き出す（漠然→具体で不安が減る）。",
+  ],
+  S:[
+    "最近連絡してない人に“スタンプだけ”送る（重さゼロ）。",
+    "今日だけでいいので「ありがとう」を3回言う。",
+    "5分だけ雑談できる相手に“短文”で連絡する（近況共有）。",
+    "安心できる場所（人/店/コミュ）を1つメモして“避難先”を作る。",
+    "誘いを受けるなら“時間を短く”して参加ハードルを下げる（30分でもOK）。",
+    "自分の近況を“1つだけ”開示する（信頼が育つ）。",
+    "苦手な人とは距離を取り、好きな人に時間を寄せる（関係の断捨離）。",
+    "今週1回だけ、誰かに小さく手伝ってもらう（頼る練習）。",
+  ],
+  R:[
+    "やりたいことを1つ選んで、今日のうちに“最初の5分”だけやる。",
+    "『なぜそれをやる？』を3行で書く（目的が強くなる）。",
+    "寝る前に『今日、未来に1mm進んだこと』を1つ書く。",
+    "今週の“やらないこと”を1つ決める（集中が生まれる）。",
+    "1日のうち“最も頭が冴える30分”を目的タスクに固定する。",
+    "気になる分野の動画/記事を1本見たら、要点を1行だけメモする。",
+    "目標が大きいなら“今週の勝ち筋”だけ決める（小さく切る）。",
+    "誰かに宣言する（SNS/友人）→逃げ道を減らす。",
+  ],
+};
+
+// ✅ “闇落ちを止める最短の1手”テンプレ（軸別）
+const SHORTEST_MOVE = {
+  H: "今夜だけは<strong>就寝時刻を30分早める</strong>（回復の土台を取り戻す）。",
+  E: "今日のうちに<strong>固定費を1つだけ見直す</strong>（不安の出どころを断つ）。",
+  S: "今すぐ<strong>1人にだけ「元気？」の一言を送る</strong>（孤立の芽を潰す）。",
+  R: "今日のうちに<strong>目的タスクを5分だけ着手</strong>（迷走を止める）。",
+  TIE: "今週だけ<strong>最優先の軸を1つ宣言</strong>（同点の停滞を崩す）。",
+};
+
+/******************************************************************
+ * グローバル状態
+ ******************************************************************/
+let analyticsEnabled = false;
+let answers = {};
+let pageSize = 1;
+let currentIndex = 0;
+let autoNext = true;
+let currentMode = "awake";
+let lastResult = null;
+
+// ✅ 名前まわり
+let currentUser = null; // 正規化したキー
+let currentUserDisplay = null; // 表示名
+const CURRENT_USER_KEY = "wellbti_current_user_v1";
+const USER_INDEX_KEY = "wellbti_users_v1"; // ["nameA","nameB"...] displayName
+const ONBOARDING_KEY = "wellbti_onboarding_v3";
+
+/******************************************************************
+ * localStorage: 名前→履歴キー
+ ******************************************************************/
+function normalizeName(name){
+  return (name||"").trim().replace(/\s+/g," ").slice(0,40);
+}
+function historyKeyFor(name){
+  // nameはdisplay
+  const n = normalizeName(name);
+  return `wellbti_history_v3::${n}`;
+}
+function loadUserIndex(){
+  try{
+    const raw = localStorage.getItem(USER_INDEX_KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr : [];
+  }catch{ return []; }
+}
+function saveUserIndex(names){
+  localStorage.setItem(USER_INDEX_KEY, JSON.stringify(names));
+}
+function upsertUser(name){
+  const n = normalizeName(name);
+  if(!n) return;
+  const list = loadUserIndex();
+  if(!list.includes(n)){
+    list.push(n);
+    saveUserIndex(list);
+  }
+}
+function setCurrentUser(name){
+  const n = normalizeName(name);
+  if(!n) return;
+  currentUser = n;
+  currentUserDisplay = n;
+  localStorage.setItem(CURRENT_USER_KEY, n);
+  upsertUser(n);
+  updateCurrentUserBadge();
+}
+function loadCurrentUser(){
+  const n = localStorage.getItem(CURRENT_USER_KEY);
+  if(n && normalizeName(n)) {
+    currentUser = normalizeName(n);
+    currentUserDisplay = currentUser;
+    return true;
+  }
+  return false;
+}
+function updateCurrentUserBadge(){
+  const badge = document.getElementById("current-user-badge");
+  const nameEl = document.getElementById("current-user-name");
+  if(currentUserDisplay){
+    badge.style.display="";
+    nameEl.textContent = currentUserDisplay;
+  }else{
+    badge.style.display="none";
+    nameEl.textContent="";
+  }
+}
+
+/******************************************************************
+ * ユーティリティ
+ ******************************************************************/
+function logEvent(name, data){ if(!analyticsEnabled) return; console.log("[Analytics]", name, data||""); }
+function clamp(v,min,max){ return Math.max(min,Math.min(max,v)); }
+function formatDateTime(ts){
+  const d = new Date(ts);
+  return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+}
+
+/******************************************************************
+ * スコア計算
+ ******************************************************************/
+function calculateScores(){
+  const baseValues = {H:[],E:[],S:[],R:[]};
+  const pairContribution = {H:0,E:0,S:0,R:0};
+
+  QUESTIONS.forEach(q=>{
+    const value = Number(answers[q.id]);
+    if(!value) return;
+
+    if(q.kind==="base"){
+      let v=value;
+      if(q.reverse) v=6-v;
+      baseValues[q.axis].push(v);
+    }else{
+      const m = pairScoreMap[value] || {main:0,comp:0};
+      pairContribution[q.axis]+=m.main;
+      pairContribution[q.compareAxis]+=m.comp;
+    }
+  });
+
+  function toScore(vals, axis){
+    if(!vals.length) return 50;
+    const avg = vals.reduce((s,v)=>s+v,0)/vals.length; //1..5
+    const baseScore = ((avg-1)/4)*100; //0..100
+    const finalScore = clamp(baseScore + (pairContribution[axis]||0), 0, 100);
+    return Math.round(finalScore);
+  }
+
+  return { H: toScore(baseValues.H,"H"), E: toScore(baseValues.E,"E"), S: toScore(baseValues.S,"S"), R: toScore(baseValues.R,"R") };
+}
+function allQuestionsAnswered(){ return QUESTIONS.every(q => answers[q.id] && Number(answers[q.id])>=1); }
+
+/******************************************************************
+ * タイプ判定（1位×4位）+同点
+ ******************************************************************/
+function determineType(scores){
+  const entries = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  const [topAxis] = entries[0];
+  const [lowAxis] = entries[entries.length-1];
+
+  const maxV = entries[0][1];
+  const minV = entries[entries.length-1][1];
+  const EPS = 2;
+  if(Math.abs(maxV - minV) <= EPS){
+    const v = Math.round((maxV+minV)/2);
+    let bucket = "mid";
+    if(v===0) bucket="0";
+    else if(v===100) bucket="100";
+    else if(v<50) bucket="low";
+    else bucket="mid";
+    const t=TIE_TYPES[bucket];
+    return { kind:"tie", code:`TIE-${bucket.toUpperCase()}`, label:t.label, vibe:"全軸がほぼ同じ強さ", dark:t.dark, awake:t.awake, hint:t.hint, topAxis:null, lowAxis:null };
+  }
+
+  const key=`${topAxis}-${lowAxis}`;
+  const base = TYPE_TABLE[key] || {code:key,label:"バランス型（例外）",vibe:"例外パターン",dark:"偏りは薄いが、優先順位が曖昧だと疲れる。",awake:"状況に応じて使い分けられる。軸を意識すると伸びる。"};
+  return { kind:"pair", code:base.code, label:base.label, vibe:base.vibe, dark:base.dark, awake:base.awake, topAxis, lowAxis };
+}
+
+/******************************************************************
+ * アクション（下位2軸狙い）
+ ******************************************************************/
+function getActions(scores){
+  const entries = Object.entries(scores).sort((a,b)=>a[1]-b[1]);
+  const lowAxes = entries.slice(0,2).map(([k])=>k);
+
+  const out=[]; const seen=new Set();
+  function pushAxis(axis,n){
+    const arr=ACTIONS[axis]||[];
+    for(const a of arr){
+      const line=`${AXIS_EMOJI[axis]} ${a}`;
+      if(!seen.has(line)){ out.push(line); seen.add(line); }
+      if(out.length>=n) return;
+    }
+  }
+  lowAxes.forEach(ax=>{ const before=out.length; pushAxis(ax, before+3); });
+  if(out.length<6){ AXES.forEach(ax=>{ if(out.length<6) pushAxis(ax, out.length+1); }); }
+  return out.slice(0,6);
+}
+
+/******************************************************************
+ * 1行トレードオフ
+ ******************************************************************/
+function makeTradeoffLine(typeInfo){
+  if(typeInfo.kind==="tie"){
+    return `あなたは“どの軸も同じ強さ”です（${typeInfo.label}）。今は「何を優先するか」が鍵。`;
+  }
+  const top = AXIS_CORE[typeInfo.topAxis] || typeInfo.topAxis;
+  const low = AXIS_CORE[typeInfo.lowAxis] || typeInfo.lowAxis;
+  return `あなたは「${top}」を最大化し、「${low}」を犠牲にしています。`;
+}
+
+/******************************************************************
+ * ✅ 闇落ちを止める最短の1手（太字1個）
+ ******************************************************************/
+function getShortestMove(typeInfo){
+  if(typeInfo.kind==="tie"){
+    return SHORTEST_MOVE.TIE;
+  }
+  const low = typeInfo.lowAxis;
+  return SHORTEST_MOVE[low] || SHORTEST_MOVE.TIE;
+}
+
+/******************************************************************
+ * レーダー
+ ******************************************************************/
+function drawRadar(scores){
+  const canvas=document.getElementById("radar-canvas");
+  if(!canvas || !canvas.getContext) return;
+  const ctx=canvas.getContext("2d");
+  const w=canvas.width,h=canvas.height;
+  ctx.clearRect(0,0,w,h);
+
+  const cx=w/2, cy=h/2;
+  const maxR=Math.min(w,h)*0.35;
+
+  ctx.fillStyle="#fff";
+  ctx.fillRect(0,0,w,h);
+
+  ctx.strokeStyle="#e5e7eb";
+  ctx.lineWidth=1;
+  for(let i=1;i<=4;i++){
+    const r=(maxR/4)*i;
+    ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke();
+  }
+
+  const angles={H:-Math.PI/2, E:0, S:Math.PI/2, R:Math.PI};
+  ctx.font="12px system-ui";
+  ctx.textAlign="center"; ctx.textBaseline="middle";
+
+  AXES.forEach(axis=>{
+    const a=angles[axis];
+    const x=cx+maxR*Math.cos(a);
+    const y=cy+maxR*Math.sin(a);
+    ctx.strokeStyle="#e5e7eb";
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(x,y); ctx.stroke();
+
+    const lx=cx+(maxR+18)*Math.cos(a);
+    const ly=cy+(maxR+18)*Math.sin(a);
+    ctx.fillStyle=AXIS_COLORS[axis] || "#111827";
+    ctx.fillText(`${AXIS_EMOJI[axis]} ${axis}`, lx, ly);
+  });
+
+  ctx.beginPath();
+  AXES.forEach((axis,i)=>{
+    const a=angles[axis];
+    const r=maxR*((scores[axis]||0)/100);
+    const x=cx+r*Math.cos(a), y=cy+r*Math.sin(a);
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.closePath();
+  ctx.fillStyle="rgba(37,99,235,.18)";
+  ctx.fill();
+  ctx.strokeStyle="rgba(219,39,119,.55)";
+  ctx.lineWidth=2;
+  ctx.stroke();
+}
+
+/******************************************************************
+ * ✅ 履歴（名前ごと）
+ ******************************************************************/
+function loadHistory(name){
+  const n = normalizeName(name || currentUser);
+  if(!n) return [];
+  try{
+    const raw=localStorage.getItem(historyKeyFor(n));
+    if(!raw) return [];
+    const arr=JSON.parse(raw);
+    return Array.isArray(arr)?arr:[];
+  }catch{ return []; }
+}
+function saveHistoryItem(item){
+  if(!currentUser) return;
+  const history=loadHistory(currentUser);
+  history.push(item);
+  localStorage.setItem(historyKeyFor(currentUser), JSON.stringify(history));
+}
+function clearHistoryFor(name){
+  const n=normalizeName(name || currentUser);
+  if(!n) return;
+  localStorage.removeItem(historyKeyFor(n));
+}
+function renderHistoryUserSelect(selectedName){
+  const sel = document.getElementById("history-user-select");
+  const list = loadUserIndex();
+  const current = normalizeName(selectedName || currentUser || list[0] || "");
+  sel.innerHTML = (list.length ? list : [""]).map(n=>`<option value="${n}">${n || "（履歴なし）"}</option>`).join("");
+  if(current && list.includes(current)) sel.value = current;
+}
+function renderHistoryList(name){
+  const container=document.getElementById("history-list-container");
+  const history=loadHistory(name);
+  if(!history.length){
+    container.innerHTML='<div class="history-empty">まだ履歴がありません。診断をするとここに表示されます。</div>';
+    return;
+  }
+  container.innerHTML = history.map((h,idx)=>{
+    const ts=formatDateTime(h.timestamp);
+    const s=h.scores;
+    return `
+      <div class="history-item" data-idx="${idx}">
+        <div>#${idx+1} <span class="muted">${ts}</span><div class="muted small">${h.typeLabel}（${h.typeCode}）</div></div>
+        <div class="small" style="text-align:right;">
+          H:${s.H} / E:${s.E} / S:${s.S} / R:${s.R}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  container.querySelectorAll(".history-item").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      const idx=Number(el.getAttribute("data-idx"));
+      const history=loadHistory(getHistoryViewingUser());
+      const item=history[idx];
+      if(!item) return;
+      const type = determineType(item.scores);
+      const actions = getActions(item.scores);
+      renderResult(item.scores, type, actions, {fromHistory:true, timestamp:item.timestamp});
+      showSection("result-section");
+      window.scrollTo({top:0, behavior:"smooth"});
+    });
+  });
+}
+function getHistoryViewingUser(){
+  const sel = document.getElementById("history-user-select");
+  return normalizeName(sel?.value || currentUser);
+}
+function drawHistoryChart(name){
+  const canvas=document.getElementById("history-canvas");
+  if(!canvas || !canvas.getContext) return;
+  const ctx=canvas.getContext("2d");
+  const w=canvas.width, h=canvas.height;
+  ctx.clearRect(0,0,w,h);
+
+  ctx.fillStyle="#ffffff";
+  ctx.fillRect(0,0,w,h);
+
+  const history=loadHistory(name);
+  if(!history.length){
+    ctx.fillStyle="#6b7280";
+    ctx.font="12px system-ui";
+    ctx.textAlign="center";
+    ctx.fillText("まだ履歴がありません。診断するとここに折れ線が表示されます。", w/2, h/2);
+    return;
+  }
+
+  const pad={l:44,r:12,t:18,b:28};
+  const cw=w-pad.l-pad.r;
+  const ch=h-pad.t-pad.b;
+  const maxY=100, minY=0;
+  const stepX = history.length>1 ? cw/(history.length-1) : 0;
+
+  ctx.strokeStyle="#e5e7eb";
+  ctx.lineWidth=1;
+  ctx.beginPath();
+  ctx.moveTo(pad.l,pad.t);
+  ctx.lineTo(pad.l,h-pad.b);
+  ctx.lineTo(w-pad.r,h-pad.b);
+  ctx.stroke();
+
+  ctx.font="10px system-ui";
+  ctx.fillStyle="#6b7280";
+  ctx.textAlign="right";
+  [0,25,50,75,100].forEach(yVal=>{
+    const y=pad.t+ch-((yVal-minY)/(maxY-minY))*ch;
+    ctx.fillText(String(yVal), pad.l-6, y+3);
+    ctx.strokeStyle="#f3f4f6";
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(w-pad.r,y); ctx.stroke();
+  });
+
+  function drawAxisLine(axis,color){
+    ctx.strokeStyle=color; ctx.lineWidth=1.8;
+    ctx.beginPath();
+    history.forEach((it,idx)=>{
+      const v=it.scores[axis];
+      const x=pad.l+stepX*idx;
+      const y=pad.t+ch-((v-minY)/(maxY-minY))*ch;
+      if(idx===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+    history.forEach((it,idx)=>{
+      const v=it.scores[axis];
+      const x=pad.l+stepX*idx;
+      const y=pad.t+ch-((v-minY)/(maxY-minY))*ch;
+      ctx.fillStyle=color;
+      ctx.beginPath(); ctx.arc(x,y,2.6,0,Math.PI*2); ctx.fill();
+    });
+  }
+
+  drawAxisLine("H", AXIS_COLORS.H);
+  drawAxisLine("E", AXIS_COLORS.E);
+  drawAxisLine("S", AXIS_COLORS.S);
+  drawAxisLine("R", AXIS_COLORS.R);
+
+  ctx.textAlign="center";
+  history.forEach((it,idx)=>{
+    const x=pad.l+stepX*idx;
+    ctx.fillStyle="#6b7280";
+    ctx.fillText(String(idx+1), x, h-10);
+  });
+}
+
+/******************************************************************
+ * 質問描画（表示スタイル 1問/4問、自動遷移）
+ ******************************************************************/
+function renderQuizPage(){
+  const container = document.getElementById("quiz-questions-container");
+  const total = QUESTIONS.length;
+  const endIndex = Math.min(currentIndex + pageSize, total);
+  const slice = QUESTIONS.slice(currentIndex, endIndex);
+
+  const pageIndicator = document.getElementById("page-indicator");
+  const pageNum = Math.floor(currentIndex / pageSize) + 1;
+  const pageCount = Math.ceil(total / pageSize);
+  pageIndicator.textContent = `ページ ${pageNum} / ${pageCount}（全 ${total} 問）`;
+
+  container.innerHTML = slice.map((q)=>{
+    const value = answers[q.id] ? Number(answers[q.id]) : null;
+    const axisTag = (q.kind==="base")
+      ? `<span class="axis-tag" data-axis="${q.axis}">${AXIS_EMOJI[q.axis]} ${AXIS_LABELS[q.axis]}</span>`
+      : `<span class="axis-tag" data-axis="${q.axis}">${AXIS_EMOJI[q.axis]} 主軸: ${q.axis}</span>
+         <span class="axis-tag" data-axis="${q.compareAxis}">⚖ 比較軸: ${q.compareAxis}</span>`;
+
+    return `
+      <div class="question" data-qid="${q.id}">
+        <div class="question-text">${q.text}</div>
+        <div>${axisTag}</div>
+        <div class="scale-row" role="radiogroup" aria-label="${q.id}">
+          ${[1,2,3,4,5].map(v=>{
+            const active = value===v ? "scale-option active" : "scale-option";
+            const label = v===1 ? "全くそう思わない" : (v===5 ? "とてもそう思う" : "");
+            return `
+              <label class="${active}">
+                <input type="radio" name="${q.id}" value="${v}" ${value===v ? "checked":""}/>
+                <span>${v}</span>
+                ${label ? `<span class="muted small">${label}</span>` : ""}
+              </label>
+            `;
+          }).join("")}
+        </div>
+        <div class="scale-caption">1: 全くそう思わない 〜 5: とてもそう思う</div>
+      </div>
+    `;
+  }).join("");
+
+  const prevBtn = document.getElementById("prev-page-btn");
+  const nextBtn = document.getElementById("next-page-btn");
+  prevBtn.disabled = currentIndex===0;
+  nextBtn.textContent = (endIndex>=total) ? "結果を見る 🎯" : "次へ →";
+
+  // ✅ ここが回答changeのイベントを付けてる場所
+  container.querySelectorAll("input[type='radio']").forEach(input=>{
+    input.addEventListener("change", (e)=>{
+      const qid = e.target.name;
+      const val = Number(e.target.value);
+      answers[qid]=val;
+
+      renderQuizPage(); // active表示更新
+
+      if(!autoNext) return;
+
+      if(pageSize===1){
+        setTimeout(()=>goNextPageOrResult(), 180);
+        return;
+      }
+
+      const pageQuestions = QUESTIONS.slice(currentIndex, endIndex);
+      const missing = pageQuestions.some(q=>!answers[q.id]);
+
+      const currentEl = document.querySelector(`.question[data-qid="${qid}"]`);
+      const allEls = Array.from(document.querySelectorAll("#quiz-questions-container .question"));
+      const idx = allEls.findIndex(el=>el===currentEl);
+      const nextEl = allEls[idx+1];
+      if(nextEl) nextEl.scrollIntoView({behavior:"smooth", block:"center"});
+
+      if(!missing){
+        setTimeout(()=>goNextPageOrResult(), 220);
+      }
+    });
+  });
+}
+
+function goNextPageOrResult(){
+  const total = QUESTIONS.length;
+  const endIndex = Math.min(currentIndex + pageSize, total);
+  if(endIndex >= total){
+    if(!allQuestionsAnswered()) return;
+
+    const scores = calculateScores();
+    const type = determineType(scores);
+    const actions = getActions(scores);
+
+    const item = {
+      timestamp: Date.now(),
+      user: currentUserDisplay,
+      scores,
+      typeCode: type.code,
+      typeLabel: type.label
+    };
+    saveHistoryItem(item);
+
+    renderResult(scores, type, actions);
+    renderHistoryUserSelect(currentUserDisplay);
+    renderHistoryList(getHistoryViewingUser());
+    drawHistoryChart(getHistoryViewingUser());
+    showSection("result-section");
+    window.scrollTo({top:0, behavior:"smooth"});
+    return;
+  }
+  currentIndex = endIndex;
+  renderQuizPage();
+}
+
+/******************************************************************
+ * 結果描画（最短の1手 追加）
+ ******************************************************************/
+function renderResult(scores, typeInfo, actions, meta={}){
+  lastResult = {scores, typeInfo, actions, meta};
+
+  const typeBlock = document.getElementById("result-type-block");
+  const scoresBlock = document.getElementById("result-scores-block");
+  const actionsBlock = document.getElementById("result-actions-block");
+  const tradeoff = document.getElementById("tradeoff-line");
+  const modeDesc = document.getElementById("mode-description");
+  const shareInput = document.getElementById("share-text");
+  const shortestBox = document.getElementById("shortest-move-box");
+
+  let chips = "";
+  if(typeInfo.kind==="pair"){
+    chips = `
+      <span class="badge-chip">${AXIS_EMOJI[typeInfo.topAxis]} 最大化: ${AXIS_LABELS[typeInfo.topAxis]}</span>
+      <span class="badge-chip">${AXIS_EMOJI[typeInfo.lowAxis]} 犠牲: ${AXIS_LABELS[typeInfo.lowAxis]}</span>
+    `;
+  }else{
+    chips = `<span class="badge-chip">🧩 特殊タイプ：4軸同点</span>`;
+  }
+
+  const when = meta?.timestamp ? `<div class="muted small" style="margin-top:.3rem;">（履歴の再表示：${formatDateTime(meta.timestamp)}）</div>` : "";
+
+  typeBlock.innerHTML = `
+    <div class="type-title">${typeInfo.label}</div>
+    <div class="type-code">コード: <strong>${typeInfo.code}</strong></div>
+    <div class="muted" style="margin-top:.25rem;">${typeInfo.vibe || ""}</div>
+    <div style="margin-top:.35rem;">${chips}</div>
+    ${typeInfo.kind==="tie" ? `<div class="muted small" style="margin-top:.35rem;">ヒント：${typeInfo.hint || ""}</div>` : ""}
+    ${when}
+  `;
+
+  tradeoff.textContent = makeTradeoffLine(typeInfo);
+  modeDesc.textContent = (currentMode==="dark") ? (typeInfo.dark||"") : (typeInfo.awake||"");
+
+  // ✅ 最短の1手（闇落ちを止める）
+  const move = getShortestMove(typeInfo);
+  shortestBox.style.display = "";
+  shortestBox.innerHTML = `🛑 闇落ちルートを止める “最短の1手” ：<br/><b>${move}</b>`;
+
+  scoresBlock.innerHTML = `
+    <div class="small">
+      <div>${AXIS_EMOJI.H} H: ${scores.H}</div>
+      <div>${AXIS_EMOJI.E} E: ${scores.E}</div>
+      <div>${AXIS_EMOJI.S} S: ${scores.S}</div>
+      <div>${AXIS_EMOJI.R} R: ${scores.R}</div>
+    </div>
+  `;
+
+  actionsBlock.innerHTML = actions.map(a=>`<li>${a}</li>`).join("");
+
+  const modeLabel = currentMode==="dark" ? "闇落ち版" : "覚醒版";
+  const shareText =
+    `Well-BTI診断（${currentUserDisplay||"名無し"}）：${typeInfo.label}（${modeLabel}）｜H:${scores.H}, E:${scores.E}, S:${scores.S}, R:${scores.R}｜${tradeoff.textContent}`;
+  shareInput.value = shareText;
+
+  drawRadar(scores);
+}
+
+/******************************************************************
+ * セクション切替
+ ******************************************************************/
+function showSection(sectionId){
+  ["onboarding-section","quiz-section","result-section","history-section"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display = (id===sectionId) ? "" : "none";
+  });
+  document.querySelectorAll(".nav-btn").forEach(btn=>{
+    const t=btn.getAttribute("data-target");
+    btn.classList.toggle("active", t===sectionId);
+  });
+
+  if(sectionId==="history-section"){
+    renderHistoryUserSelect(getHistoryViewingUser());
+    renderHistoryList(getHistoryViewingUser());
+    drawHistoryChart(getHistoryViewingUser());
+  }
+}
+
+/******************************************************************
+ * 初期化
+ ******************************************************************/
+document.addEventListener("DOMContentLoaded", ()=>{
+  // nav
+  document.querySelectorAll(".nav-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const target=btn.getAttribute("data-target");
+      if(target) showSection(target);
+    });
+  });
+
+  // consent
+  const toggleConsent=document.getElementById("toggle-consent");
+  const startBtn=document.getElementById("start-quiz-btn");
+  const nameInput=document.getElementById("user-name");
+
+  function canStart(){
+    const hasName = normalizeName(nameInput.value).length>0;
+    const hasConsent = toggleConsent.classList.contains("on");
+    startBtn.disabled = !(hasName && hasConsent);
+  }
+
+  function setConsent(on){
+    toggleConsent.classList.toggle("on",on);
+    toggleConsent.setAttribute("aria-checked", on?"true":"false");
+    canStart();
+  }
+
+  nameInput.addEventListener("input", ()=>{
+    canStart();
+  });
+
+  toggleConsent.addEventListener("click", ()=>setConsent(!toggleConsent.classList.contains("on")));
+  toggleConsent.addEventListener("keydown", (e)=>{
+    if(e.key===" "||e.key==="Enter"){ e.preventDefault(); setConsent(!toggleConsent.classList.contains("on")); }
+  });
+
+  // analytics
+  const toggleAnalytics=document.getElementById("toggle-analytics");
+  function setAnalytics(on){
+    toggleAnalytics.classList.toggle("on",on);
+    toggleAnalytics.setAttribute("aria-checked", on?"true":"false");
+    analyticsEnabled=on;
+    logEvent("analytics_toggle",{enabled:on});
+  }
+  toggleAnalytics.addEventListener("click", ()=>setAnalytics(!toggleAnalytics.classList.contains("on")));
+  toggleAnalytics.addEventListener("keydown", (e)=>{
+    if(e.key===" "||e.key==="Enter"){ e.preventDefault(); setAnalytics(!toggleAnalytics.classList.contains("on")); }
+  });
+
+  // page size toggle
+  const togglePage=document.getElementById("toggle-page-size");
+  const pageLabel=document.getElementById("page-size-label");
+  function setPageSize(on){
+    togglePage.classList.toggle("on",on);
+    togglePage.setAttribute("aria-checked", on?"true":"false");
+    pageSize = on ? 4 : 1;
+    pageLabel.textContent = on ? "4問ずつ" : "1問ずつ";
+    currentIndex = 0;
+    renderQuizPage();
+  }
+  togglePage.addEventListener("click", ()=>setPageSize(!togglePage.classList.contains("on")));
+  togglePage.addEventListener("keydown", (e)=>{
+    if(e.key===" "||e.key==="Enter"){ e.preventDefault(); setPageSize(!togglePage.classList.contains("on")); }
+  });
+
+  // auto next toggle
+  const toggleAuto=document.getElementById("toggle-auto-next");
+  const autoLabel=document.getElementById("auto-next-label");
+  function setAuto(on){
+    toggleAuto.classList.toggle("on",on);
+    toggleAuto.setAttribute("aria-checked", on?"true":"false");
+    autoNext = on;
+    autoLabel.textContent = on ? "ON" : "OFF";
+  }
+  setAuto(true);
+  toggleAuto.addEventListener("click", ()=>setAuto(!toggleAuto.classList.contains("on")));
+  toggleAuto.addEventListener("keydown", (e)=>{
+    if(e.key===" "||e.key==="Enter"){ e.preventDefault(); setAuto(!toggleAuto.classList.contains("on")); }
+  });
+
+  // start
+  startBtn.addEventListener("click", ()=>{
+    const name = normalizeName(document.getElementById("user-name").value);
+    if(!name){ alert("名前を入力してください。"); return; }
+    setCurrentUser(name);
+
+    const onboarding={
+      user: currentUserDisplay,
+      ageGroup: document.getElementById("age-group").value || null,
+      grade: document.getElementById("grade").value || null,
+      chronotype: document.getElementById("chronotype").value || null,
+      consentResearch: toggleConsent.classList.contains("on")
+    };
+    localStorage.setItem(ONBOARDING_KEY, JSON.stringify(onboarding));
+    logEvent("start_quiz", onboarding);
+
+    answers = {};
+    currentIndex = 0;
+    showSection("quiz-section");
+    renderQuizPage();
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+
+  // prev/next
+  document.getElementById("prev-page-btn").addEventListener("click", ()=>{
+    currentIndex = Math.max(0, currentIndex - pageSize);
+    renderQuizPage();
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+  document.getElementById("next-page-btn").addEventListener("click", ()=>{
+    const total = QUESTIONS.length;
+    const endIndex = Math.min(currentIndex + pageSize, total);
+    const slice = QUESTIONS.slice(currentIndex, endIndex);
+    const missing = slice.filter(q=>!answers[q.id]);
+    if(missing.length){
+      alert("このページのすべての質問に回答してください。");
+      return;
+    }
+    if(endIndex >= total){
+      if(!allQuestionsAnswered()){
+        alert("まだ回答していない質問があります。");
+        return;
+      }
+      const scores = calculateScores();
+      const type = determineType(scores);
+      const actions = getActions(scores);
+      const item = { timestamp: Date.now(), user: currentUserDisplay, scores, typeCode:type.code, typeLabel:type.label };
+      saveHistoryItem(item);
+      renderResult(scores, type, actions);
+
+      renderHistoryUserSelect(currentUserDisplay);
+      renderHistoryList(currentUserDisplay);
+      drawHistoryChart(currentUserDisplay);
+
+      showSection("result-section");
+      window.scrollTo({top:0, behavior:"smooth"});
+    }else{
+      currentIndex = endIndex;
+      renderQuizPage();
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
+  });
+
+  // mode toggle
+  const btnAwake=document.getElementById("mode-awake");
+  const btnDark=document.getElementById("mode-dark");
+  function setMode(mode){
+    currentMode = mode;
+    btnAwake.classList.toggle("active", mode==="awake");
+    btnDark.classList.toggle("active", mode==="dark");
+    if(lastResult){
+      renderResult(lastResult.scores, lastResult.typeInfo, lastResult.actions, lastResult.meta);
+    }
+  }
+  btnAwake.addEventListener("click", ()=>setMode("awake"));
+  btnDark.addEventListener("click", ()=>setMode("dark"));
+
+  // share
+  document.getElementById("copy-share-btn").addEventListener("click", async ()=>{
+    const txt = document.getElementById("share-text").value;
+    try{ await navigator.clipboard.writeText(txt); alert("診断結果をコピーしました。"); }
+    catch{ alert("コピーに失敗しました。手動で選択してコピーしてください。"); }
+  });
+  document.getElementById("native-share-btn").addEventListener("click", async ()=>{
+    const txt = document.getElementById("share-text").value;
+    if(navigator.share){
+      try{ await navigator.share({text:txt, title:"Well-BTI診断"}); }catch(e){}
+    }else{
+      alert("このブラウザはWeb Share APIに対応していません。コピー機能を使ってください。");
+    }
+  });
+
+  // jump to history
+  document.getElementById("jump-history-btn").addEventListener("click", ()=>{
+    showSection("history-section");
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+
+  // history user select change
+  const historySelect = document.getElementById("history-user-select");
+  historySelect.addEventListener("change", ()=>{
+    renderHistoryList(getHistoryViewingUser());
+    drawHistoryChart(getHistoryViewingUser());
+  });
+
+  // set as current user
+  document.getElementById("set-as-current-user-btn").addEventListener("click", ()=>{
+    const n = getHistoryViewingUser();
+    if(!n){ alert("名前がありません。"); return; }
+    setCurrentUser(n);
+    alert(`現在ユーザーを「${n}」に切り替えました。`);
+    updateCurrentUserBadge();
+  });
+
+  // clear history (for selected name)
+  document.getElementById("clear-history-btn").addEventListener("click", ()=>{
+    const name = getHistoryViewingUser();
+    if(!name){ alert("名前がありません。"); return; }
+    if(!confirm(`「${name}」の履歴をすべて削除しますか？（ブラウザ内のローカルデータのみ）`)) return;
+    clearHistoryFor(name);
+    renderHistoryList(name);
+    drawHistoryChart(name);
+  });
+
+  // initial: load current user + user index into selector
+  loadCurrentUser();
+  updateCurrentUserBadge();
+
+  // onboarding: 以前のcurrentUserがあれば名前欄に入れておく
+  if(currentUserDisplay){
+    nameInput.value = currentUserDisplay;
+  }
+  canStart();
+
+  renderHistoryUserSelect(currentUserDisplay || "");
+  renderHistoryList(getHistoryViewingUser());
+  drawHistoryChart(getHistoryViewingUser());
+});
+</script>
+</body>
+</html>
